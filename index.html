@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hobby Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      width: 420px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    h2 { text-align: center; }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover { background: #43a047; }
+    .option { margin: 10px 0; }
+  </style>
+</head>
+<body>
+
+<div class="card" id="app">
+  <h2>Student Name</h2>
+  <input id="name" placeholder="Enter your name" style="width:100%;padding:10px">
+  <button onclick="startQuiz()">Next</button>
+</div>
+
+<script>
+let studentName = "";
+let current = 0;
+let score = 0;
+
+const questions = [
+  {
+    q: "What is a hobby?",
+    options: [
+      "Something you do to earn money",
+      "Something you do for enjoyment and relaxation",
+      "A school subject",
+      "A job"
+    ],
+    correct: 1
+  },
+  {
+    q: "Watching television can be a hobby.",
+    options: ["True", "False"],
+    correct: 0
+  }
+  // ⬅️ أضف أسئلة هنا لاحقًا
+];
+
+function startQuiz() {
+  studentName = document.getElementById("name").value;
+  if (!studentName) return alert("Please enter your name");
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[current];
+  let html = `<h2>${q.q}</h2>`;
+  q.options.forEach((opt, i) => {
+    html += `
+      <div class="option">
+        <input type="radio" name="opt" value="${i}"> ${opt}
+      </div>`;
+  });
+  html += `<button onclick="next()">Next</button>`;
+  document.getElementById("app").innerHTML = html;
+}
+
+function next() {
+  const selected = document.querySelector('input[name="opt"]:checked');
+  if (!selected) return alert("Choose an answer");
+  if (parseInt(selected.value) === questions[current].correct) score++;
+  current++;
+  if (current < questions.length) showQuestion();
+  else finish();
+}
+
+function finish() {
+  document.getElementById("app").innerHTML = `
+    <h2>Result</h2>
+    <p><strong>${studentName}</strong></p>
+    <p>Your score: ${score} / ${questions.length}</p>
+  `;
+}
+</script>
+
+</body>
+</html>
