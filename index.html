@@ -6,40 +6,58 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      background: linear-gradient(135deg, #eef2f3, #cfd9df);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     .card {
-      background: white;
+      background: #fff;
       padding: 30px;
-      width: 420px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      width: 460px;
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
     }
-    h2 { text-align: center; }
+    h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .progress {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+    .option {
+      margin: 10px 0;
+    }
     button {
       margin-top: 20px;
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background: #4CAF50;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
+    }
+    button:hover {
+      background: #43a047;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
       font-size: 16px;
     }
-    button:hover { background: #43a047; }
-    .option { margin: 10px 0; }
   </style>
 </head>
 <body>
 
 <div class="card" id="app">
   <h2>Student Name</h2>
-  <input id="name" placeholder="Enter your name" style="width:100%;padding:10px">
+  <input id="name" type="text" placeholder="Enter your name">
   <button onclick="startQuiz()">Next</button>
 </div>
 
@@ -49,38 +67,173 @@ let current = 0;
 let score = 0;
 
 const questions = [
-  {
-    q: "What is a hobby?",
+  { q: "What is a hobby?",
     options: [
       "Something you do to earn money",
       "Something you do for enjoyment and relaxation",
-      "A school subject",
-      "A job"
+      "Something you must do at school",
+      "A full-time job"
     ],
     correct: 1
   },
-  {
-    q: "Watching television can be a hobby.",
+  { q: "A hobby is usually done during:",
+    options: [
+      "Work time",
+      "School time",
+      "Spare time",
+      "Sleeping time"
+    ],
+    correct: 2
+  },
+  { q: "Which of the following can be a hobby?",
+    options: [
+      "Doing office work",
+      "Collecting things",
+      "Driving a taxi",
+      "Studying for exams"
+    ],
+    correct: 1
+  },
+  { q: "Watching television can be considered a hobby.",
+    options: ["True", "False"],
+    correct: 0
+  },
+  { q: "What can a person gain by practicing a hobby regularly?",
+    options: [
+      "Only money",
+      "Skill and knowledge",
+      "Stress",
+      "Fame"
+    ],
+    correct: 1
+  },
+  { q: "If you live near a river, which hobbies may you enjoy?",
+    options: [
+      "Cycling and running",
+      "Swimming or fishing",
+      "Reading books",
+      "Cooking"
+    ],
+    correct: 1
+  },
+  { q: "Why is swimming enjoyable on a very hot day?",
+    options: [
+      "Because it is hard work",
+      "Because it is competitive",
+      "Because the water is cool and refreshing",
+      "Because it earns money"
+    ],
+    correct: 2
+  },
+  { q: "If swimming sounds too difficult, which hobby may be better?",
+    options: [
+      "Running",
+      "Fishing",
+      "Dancing",
+      "Painting"
+    ],
+    correct: 1
+  },
+  { q: "Fishing is traditionally something fathers enjoyed teaching:",
+    options: [
+      "Their daughters",
+      "Their sons",
+      "Their teachers",
+      "Their friends"
+    ],
+    correct: 1
+  },
+  { q: "Many people enjoy fishing because it allows them to:",
+    options: [
+      "Watch television",
+      "Watch nature near water",
+      "Compete with others",
+      "Make money"
+    ],
+    correct: 1
+  },
+  { q: "Jewellery making is a hobby that goes back:",
+    options: [
+      "A few years",
+      "Dozens of years",
+      "Hundreds of years",
+      "Only modern times"
+    ],
+    correct: 2
+  },
+  { q: "Which materials are mentioned for jewellery making?",
+    options: [
+      "Plastic and paper",
+      "Silver, glass beads, and shells",
+      "Iron and steel",
+      "Wood only"
+    ],
+    correct: 1
+  },
+  { q: "Jewellery made as a hobby is often given as:",
+    options: [
+      "Homework",
+      "Office tools",
+      "Gifts for family and friends",
+      "School uniforms"
+    ],
+    correct: 2
+  },
+  { q: "Blanket weaving is described as:",
+    options: [
+      "A modern hobby",
+      "An ancient craft",
+      "A sport",
+      "A job only"
+    ],
+    correct: 1
+  },
+  { q: "Blanket weaving uses materials such as:",
+    options: [
+      "Plastic and metal",
+      "Wool, felt, silk, or mohair",
+      "Glass and stone",
+      "Paper and cotton"
+    ],
+    correct: 1
+  },
+  { q: "Blanket weaving requires a lot of patience.",
+    options: ["True", "False"],
+    correct: 0
+  },
+  { q: "Blanket patterns are the same everywhere.",
+    options: ["True", "False"],
+    correct: 1
+  },
+  { q: "Blankets made by weaving can be treasured for generations.",
     options: ["True", "False"],
     correct: 0
   }
-  // ⬅️ أضف أسئلة هنا لاحقًا
 ];
 
 function startQuiz() {
-  studentName = document.getElementById("name").value;
-  if (!studentName) return alert("Please enter your name");
+  studentName = document.getElementById("name").value.trim();
+  if (!studentName) {
+    alert("Please enter your name");
+    return;
+  }
   showQuestion();
 }
 
 function showQuestion() {
   const q = questions[current];
-  let html = `<h2>${q.q}</h2>`;
+  let html = `
+    <div class="progress">Question ${current + 1} of ${questions.length}</div>
+    <h2>${q.q}</h2>
+  `;
   q.options.forEach((opt, i) => {
     html += `
       <div class="option">
-        <input type="radio" name="opt" value="${i}"> ${opt}
-      </div>`;
+        <label>
+          <input type="radio" name="opt" value="${i}"> ${opt}
+        </label>
+      </div>
+    `;
   });
   html += `<button onclick="next()">Next</button>`;
   document.getElementById("app").innerHTML = html;
@@ -88,18 +241,28 @@ function showQuestion() {
 
 function next() {
   const selected = document.querySelector('input[name="opt"]:checked');
-  if (!selected) return alert("Choose an answer");
-  if (parseInt(selected.value) === questions[current].correct) score++;
+  if (!selected) {
+    alert("Please choose an answer");
+    return;
+  }
+  if (parseInt(selected.value) === questions[current].correct) {
+    score++;
+  }
   current++;
-  if (current < questions.length) showQuestion();
-  else finish();
+  if (current < questions.length) {
+    showQuestion();
+  } else {
+    finish();
+  }
 }
 
 function finish() {
+  const percentage = Math.round((score / questions.length) * 100);
   document.getElementById("app").innerHTML = `
-    <h2>Result</h2>
+    <h2>Quiz Completed</h2>
     <p><strong>${studentName}</strong></p>
     <p>Your score: ${score} / ${questions.length}</p>
+    <p>Percentage: <strong>${percentage}%</strong></p>
   `;
 }
 </script>
